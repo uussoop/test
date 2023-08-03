@@ -12,7 +12,7 @@ func main() {
 
 	if os == "js" {
 
-		path := "./folder"
+		path := "/"
 
 		files, err := o.ReadDir(path)
 		if err != nil {
