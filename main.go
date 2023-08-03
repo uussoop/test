@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	o "os"
 	"runtime"
-	"syscall/js"
 )
 
 func main() {
@@ -12,12 +12,19 @@ func main() {
 
 	if os == "js" {
 
-		// WebAssembly - no system commands
+		path := "./folder"
 
-		// Could use JavaScript interop to get process info
-		out := js.Global().Get("navigator").Call("getProcessList")
+		files, err := o.ReadDir(path)
+		if err != nil {
+			panic(err)
+		}
 
-		fmt.Println(out)
+		for _, file := range files {
+			fmt.Println(file.Name())
+			if file.IsDir() {
+				fmt.Println("[DIR]")
+			}
+		}
 	}
 	// Print output
 }
