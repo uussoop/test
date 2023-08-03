@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	o "os"
+	"io"
+	"net/http"
 	"runtime"
 )
 
@@ -12,19 +13,22 @@ func main() {
 
 	if os == "js" {
 
-		path := "/"
+		// Make request
+		resp, err := http.Get("https://raw.githubusercontent.com/uussoop/test/master/main.go")
+		if err != nil {
+			panic(err)
+		}
+		defer resp.Body.Close()
 
-		files, err := o.ReadDir(path)
+		// Read response body
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			panic(err)
 		}
 
-		for _, file := range files {
-			fmt.Println(file.Name())
-			if file.IsDir() {
-				fmt.Println("[DIR]")
-			}
-		}
+		// Print status and response
+		fmt.Println(resp.Status)
+		fmt.Println(string(body))
 	}
 	// Print output
 }
